@@ -57,10 +57,11 @@ public class HomeController {
     }
 
     @PostMapping(value = "/send")
-    public String sendMessage(@RequestParam(value = "value") String value, @RequestParam(value = "dialogId") Long dialogId) {
+    public String sendMessage(@RequestParam(value = "value") String value, @RequestParam(value = "dialogId") Long dialogId, Authentication authentication) {
         Dialog dialog = dialogRepository.findOneById(dialogId);
         Set<Message> messages = dialog.getMessages();
-        Message build = Message.builder().value(value).dialog(dialog).build();
+        User user = authService.getUserByAuthentication(authentication);
+        Message build = Message.builder().value(value).dialog(dialog).user_mes(user).build();
         messages.add(build);
         dialog.setMessages(messages);
         dialogRepository.save(dialog);

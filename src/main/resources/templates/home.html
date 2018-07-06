@@ -18,7 +18,7 @@
 
         <div th:case="*">
             <ul th:each="message : ${model.dialog.messages}">
-                <li> <span th:text="${message.user_mes}"></span></li>
+                <li> <span th:text="${message.user_mes.name}"></span></li>
                 <li> <span th:text="${message.value}"></span></li>
             </ul>
             <form action="/send" method="post">

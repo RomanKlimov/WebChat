@@ -17,7 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @ToString(exclude = {"users", "messages"})
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"users", "messages"})
 public class Dialog {
 
     @Id
