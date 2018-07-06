@@ -4,12 +4,14 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "messages")
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @ToString
 @EqualsAndHashCode
@@ -30,5 +32,9 @@ public class Message {
     @NotNull
     @Column(name = "value")
     private String value;
+
+    @Column(name = "creation_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationDate = new Date();
 
 }

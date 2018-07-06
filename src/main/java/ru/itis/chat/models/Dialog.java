@@ -14,8 +14,9 @@ import java.util.Set;
 @Entity
 @Table(name = "dialogs")
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-@ToString
+@ToString(exclude = {"users", "messages"})
 @EqualsAndHashCode
 public class Dialog {
 
@@ -29,5 +30,13 @@ public class Dialog {
 
     @OneToMany(mappedBy = "dialog", cascade = CascadeType.ALL)
     private Set<Message> messages = new HashSet<Message>();
+
+
+//    @Override
+//    public int hashCode() {
+//        Integer result = id;
+//        result = 31 * result + (title != null ? title.hashCode() : 0);
+//        return result;
+//    }
 
 }

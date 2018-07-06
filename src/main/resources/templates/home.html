@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <ul th:each="users : ${model.userList}">
+            <li> <a th:href="@{'/home?login='+${users.login}}"><span th:text="${users.login}"></span></a></li>
+        </ul>
+    </div>
+    <div th:switch="${model.dialog}" >
+
+        <div th:case="null">
+            <h1>select dialog</h1>
+        </div>
+
+        <div th:case="*">
+            <ul th:each="message : ${model.dialog.messages}">
+                <li> <span th:text="${message.user_mes}"></span></li>
+                <li> <span th:text="${message.value}"></span></li>
+            </ul>
+            <form action="/send" method="post">
+                <input type="hidden" name="dialogId" th:value="${model.dialog.id}"/>
+                <input type="text" name="value" />
+                <button type="submit">Send</button>
+            </form>
+        </div>
+
+    </div>
+    <!--<div th:unless="${model.dialog == null}">-->
+        <!--<h1>select dialog</h1>-->
+    <!--</div>-->
+</body>
+</html>

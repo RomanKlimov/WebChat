@@ -1,6 +1,7 @@
 package ru.itis.chat.models;
 
 import lombok.*;
+import ru.itis.chat.security.Role.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @ToString
 @EqualsAndHashCode
@@ -32,6 +34,9 @@ public class User {
 
     @Column(name = "lastName")
     private String lastName;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "user_dialog", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "dialog_id", referencedColumnName = "id"))

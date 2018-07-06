@@ -9,7 +9,8 @@ import java.util.Optional;
 
 public interface DialogRepository extends JpaRepository<Dialog, Long> {
 //    Optional<Dialog> findOneByUsers();
-    Optional<Dialog> findDialogByUsersContains(List<User> users);
-    Optional<Dialog> findDialogByUsersContaining(List<User> users);
+    List<Dialog> findDialogByUsersContains(List<User> users);
+    List<Dialog> findDialogByUsersContaining(List<User> users);
+    Dialog findOneById(Long id);
 
 }

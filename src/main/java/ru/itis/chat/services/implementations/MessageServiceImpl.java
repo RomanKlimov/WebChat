@@ -1,6 +1,7 @@
 package ru.itis.chat.services.implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.itis.chat.models.Dialog;
 import ru.itis.chat.models.Message;
 import ru.itis.chat.repositories.MessageRepository;
@@ -8,6 +9,7 @@ import ru.itis.chat.services.interfaces.MessageService;
 
 import java.util.Set;
 
+@Service
 public class MessageServiceImpl implements MessageService {
 
     @Autowired
