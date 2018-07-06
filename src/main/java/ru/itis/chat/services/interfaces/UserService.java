@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface UserService {
     void createUser(User user);
-    List<User> getAllUsers();
+    List<User> getAllExceptCurrentUser(User currentUser);
     Optional<User> getUserByLogin(String login);
     Dialog getDialog(User user, String loginParam);
 }

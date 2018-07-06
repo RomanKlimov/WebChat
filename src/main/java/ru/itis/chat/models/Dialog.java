@@ -29,7 +29,7 @@ public class Dialog {
     private List<User> users = new ArrayList<>();
 
     @OneToMany(mappedBy = "dialog", cascade = CascadeType.ALL)
-    private Set<Message> messages = new HashSet<Message>();
+    private List<Message> messages = new ArrayList<>();
 
 
 //    @Override

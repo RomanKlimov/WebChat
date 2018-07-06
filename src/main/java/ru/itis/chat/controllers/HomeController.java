@@ -15,10 +15,7 @@ import ru.itis.chat.services.implementations.MessageServiceImpl;
 import ru.itis.chat.services.implementations.UserServiceImpl;
 import ru.itis.chat.services.interfaces.AuthService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 public class HomeController {
@@ -42,9 +39,9 @@ public class HomeController {
     public String home(@ModelAttribute("model")ModelMap modelMap,
                        @RequestParam(value = "login", required = false) String loginParam,
                        Authentication authentication) {
-        List<User> userList = userService.getAllUsers();
-        modelMap.addAttribute("userList", userList);
         User user = authService.getUserByAuthentication(authentication);
+        List<User> userList = userService.getAllExceptCurrentUser(user);
+        modelMap.addAttribute("userList", userList);
         Dialog dialog = userService.getDialog(user, loginParam);
         if (dialog != null){
             modelMap.addAttribute("dialog",dialog);
@@ -59,14 +56,14 @@ public class HomeController {
     @PostMapping(value = "/send")
     public String sendMessage(@RequestParam(value = "value") String value, @RequestParam(value = "dialogId") Long dialogId, Authentication authentication) {
         Dialog dialog = dialogRepository.findOneById(dialogId);
-        Set<Message> messages = dialog.getMessages();
+        List<Message> messages = dialog.getMessages();
         User user = authService.getUserByAuthentication(authentication);
-        Message build = Message.builder().value(value).dialog(dialog).user_mes(user).build();
+        Message build = Message.builder().value(value).dialog(dialog).user_mes(user).creationDate(new Date()).build();
         messages.add(build);
+        messages.sort((o1, o2) -> o1.getCreationDate().compareTo(o2.getCreationDate()));
         dialog.setMessages(messages);
         dialogRepository.save(dialog);
         return "redirect:/home";
     }
-
 
 }
