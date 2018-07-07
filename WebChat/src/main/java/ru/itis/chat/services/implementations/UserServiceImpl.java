@@ -1,5 +1,7 @@
 package ru.itis.chat.services.implementations;
 
+import com.talanlabs.avatargenerator.Avatar;
+import com.talanlabs.avatargenerator.SquareAvatar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.itis.chat.models.Dialog;
@@ -8,6 +10,10 @@ import ru.itis.chat.repositories.UserRepository;
 import ru.itis.chat.services.interfaces.DialogService;
 import ru.itis.chat.services.interfaces.UserService;
 
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +31,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createUser(User user) {
         if(!userRepository.findFirstByLogin(user.getLogin()).isPresent()) {
+            Avatar avatar = SquareAvatar.newAvatarBuilder().build();
+            avatar.createAsPngToFile(user.getId(), new File("A:/"));
+
             userRepository.save(user);
         }
     }

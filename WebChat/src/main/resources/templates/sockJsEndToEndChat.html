@@ -60,8 +60,8 @@
                     </div>
                 </div>
                 <ul th:each="user : ${onlineUsers}">
-                    <li class="list-group-item"><a th:href="@{'/msg-forward/dialog?friend=' + ${user.login}}" class="active-user" id="friend"
-                                                    th:text="${user.login}">дебаг текст</a></li>
+                    <li class="list-group-item"><img th:src="@{'/pic?target=' + ${user.login}}"/>  <a th:href="@{'/msg-forward/dialog?friend=' + ${user.login}}" class="active-user" id="friend"
+                                                    th:text="${user.name}">дебаг текст</a></li>
                 </ul>
             </ul>
         </div>
