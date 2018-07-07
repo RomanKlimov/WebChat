@@ -1,4 +1,4 @@
-package ru.itis.chat.config;
+package ru.itis.bot;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -6,11 +6,6 @@ import org.springframework.web.socket.config.annotation.AbstractWebSocketMessage
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 
-/**
- * Configures web socket message broker.
- *
- * @author Yasitha Thilakaratne
- */
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketSockJsBrokerConfig extends AbstractWebSocketMessageBrokerConfigurer {
@@ -24,6 +19,6 @@ public class WebSocketSockJsBrokerConfig extends AbstractWebSocketMessageBrokerC
 
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/grp-chat").withSockJS();
-        registry.addEndpoint("/chat").withSockJS();
+        registry.addEndpoint("/bot").setAllowedOrigins("*").withSockJS();
     }
 }

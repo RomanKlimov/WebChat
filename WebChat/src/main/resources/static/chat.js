@@ -6,11 +6,18 @@ var dialog = document.querySelector('#dialog').innerText.trim();
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    connect();
+    connect(selectedUsername);
 });
 
-function connect() {
-    var socket = new SockJS("/chat");
+function connect(selectedUsername) {
+    if (selectedUsername == "bot"){
+        var socket = new SockJS("http://localhost:8090/bot");
+        console.log("connecting to 8090")
+    }
+    else {
+        socket = new SockJS("http://localhost:8080/chat");
+        console.log("connecting to 8080")
+    }
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
@@ -44,7 +51,7 @@ function sendMessage() {
         alert('Please select a user.');
         return;
     }
-    console.log(from)
+    console.log(from);
     stompClient.send("/app/chat/" + dialog, {},
         JSON.stringify({'from': from, 'text': text, 'recipient': selectedUsername}));
 }
