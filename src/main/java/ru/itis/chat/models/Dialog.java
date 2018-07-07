@@ -28,7 +28,7 @@ public class Dialog {
     @JoinTable(name = "user_dialog", joinColumns = @JoinColumn(name = "dialog_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private List<User> users = new ArrayList<>();
 
-    @OneToMany(mappedBy = "dialog", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "dialog", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Message> messages = new ArrayList<>();
 
 

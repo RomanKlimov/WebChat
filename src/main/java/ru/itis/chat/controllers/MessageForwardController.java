@@ -22,6 +22,7 @@ import ru.itis.chat.models.Dialog;
 import ru.itis.chat.models.User;
 import ru.itis.chat.repositories.UserRepository;
 import ru.itis.chat.services.interfaces.AuthService;
+import ru.itis.chat.services.interfaces.DialogService;
 import ru.itis.chat.services.interfaces.UserService;
 import ru.itis.chat.util.ActiveSessionManager;
 import ru.itis.chat.util.CommonUtils;
@@ -42,7 +43,7 @@ import java.util.Set;
  */
 @Controller
 @RequestMapping("msg-forward")
-public class MessageForwardController implements ActiveSessionManager.ActiveUserChangeListener {
+public class MessageForwardController  {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(MessageForwardController.class);
 
@@ -57,6 +58,9 @@ public class MessageForwardController implements ActiveSessionManager.ActiveUser
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private DialogService dialogService;
 
     @Autowired
     private UserRepository userRepository;
@@ -83,47 +87,49 @@ public class MessageForwardController implements ActiveSessionManager.ActiveUser
         return "login";
     }
 
-    @MessageMapping("/chat")
-    public void send(Message<ChatMessage> message, @Payload ChatMessage chatMessage) throws Exception {
-        Principal principal = message.getHeaders().get(SimpMessageHeaderAccessor.USER_HEADER, Principal.class);
-        if (principal == null) {
-            LOGGER.error("Principal is null");
-            return;
-        }
-        System.out.println("Зашел на /чат");
-        String authenticatedSender = principal.getName();
-        String time = CommonUtils.getCurrentTimeStamp();
+//    @MessageMapping("/chat")
+//    public void send(Message<ChatMessage> message, @Payload ChatMessage chatMessage) throws Exception {
+//        Principal principal = message.getHeaders().get(SimpMessageHeaderAccessor.USER_HEADER, Principal.class);
+//        if (principal == null) {
+//            LOGGER.error("Principal is null");
+//            return;
+//        }
+//        System.out.println("Зашел на /чат");
+//        String authenticatedSender = principal.getName();
+//        String time = CommonUtils.getCurrentTimeStamp();
+//
+//        if (!authenticatedSender.equals(chatMessage.getRecipient())) {
+//            webSocket.convertAndSendToUser(authenticatedSender, "/queue/messages",
+//                    new OutputMessage(chatMessage.getFrom(), chatMessage.getText(), time, true));
+//        }
+//
+//        webSocket.convertAndSendToUser(chatMessage.getRecipient(), "/queue/messages",
+//                new OutputMessage(chatMessage.getFrom(), chatMessage.getText(), time, false));
+//
+//    }
+//
+//    /**
+//     * This method will get called when Observable's internal state
+//     * is changed.
+//     */
+//    public void notifyActiveUserChange() {
+//        List<User> activeUsers = userRepository.findAll();
+//        webSocket.convertAndSend("/topic/active", activeUsers);
+//    }
 
-        if (!authenticatedSender.equals(chatMessage.getRecipient())) {
-            webSocket.convertAndSendToUser(authenticatedSender, "/queue/messages",
-                    new OutputMessage(chatMessage.getFrom(), chatMessage.getText(), time, true));
-        }
+    @MessageMapping("/chat/{dialogId}")
+    public void sendPrivateMessage(@Payload ChatMessage chatMessage, Principal principal, @DestinationVariable("dialogId") String dialogId) {
 
-        webSocket.convertAndSendToUser(chatMessage.getRecipient(), "/queue/messages",
-                new OutputMessage(chatMessage.getFrom(), chatMessage.getText(), time, false));
-
-    }
-
-    /**
-     * This method will get called when Observable's internal state
-     * is changed.
-     */
-    public void notifyActiveUserChange() {
-        List<User> activeUsers = userRepository.findAll();
-        webSocket.convertAndSend("/topic/active", activeUsers);
-    }
-
-    @MessageMapping("/chat/{username}")
-    public void sendPrivateMessage(@Payload ChatMessage chatMessage, Principal principal, @DestinationVariable("username") String username) {
+        dialogService.updateDialog(chatMessage.getText(), dialogId, principal.getName());
         chatMessage.setFrom(principal.getName());
-        chatMessage.setRecipient(username);
+        chatMessage.setRecipient(dialogId);
         String time = CommonUtils.getCurrentTimeStamp();
         chatMessage.setTime(time);
 
 
-        System.out.println(username);
+        System.out.println(dialogId);
         System.out.println(principal.getName());
-        webSocket.convertAndSend("/user1/" + username, chatMessage);
+        webSocket.convertAndSend("/user1/" + dialogId, chatMessage);
 
     }
 

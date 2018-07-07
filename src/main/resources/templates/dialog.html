@@ -8,6 +8,24 @@
 <span id="username" th:text="${username.name}"> </span>
 <span id="friend" th:text="${friend.name}"> </span>
 <div class="row">
+
+
+    <div th:switch="${dialog}" >
+
+        <div th:case="null">
+            <h1>no messages yet</h1>
+        </div>
+
+        <div th:case="*">
+            <ul th:each="message : ${ dialog.messages}">
+                <li> <span th:text="${message.user_mes.name}"></span></li>
+                <li> <span th:text="${message.value}"></span></li>
+            </ul>
+        </div>
+
+    </div>
+
+
     <div class="col-md-6">
 
         <div id="conversationDiv">

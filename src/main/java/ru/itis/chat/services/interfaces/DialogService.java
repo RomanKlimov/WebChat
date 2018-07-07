@@ -12,4 +12,5 @@ public interface DialogService {
     boolean checkExistence(List<User> users);
     void createDialog(Dialog dialog);
     Dialog getDialogByUsers(List<User> users);
+    void updateDialog(String valueOfMessage, String dialogId, String username);
 }
