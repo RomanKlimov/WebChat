@@ -3,7 +3,9 @@ package ru.itis.chat.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -13,9 +15,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.itis.chat.dto.ChatMessage;
 import ru.itis.chat.dto.OutputMessage;
+import ru.itis.chat.models.Dialog;
 import ru.itis.chat.models.User;
 import ru.itis.chat.repositories.UserRepository;
 import ru.itis.chat.services.interfaces.AuthService;
@@ -28,6 +31,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -86,6 +90,7 @@ public class MessageForwardController implements ActiveSessionManager.ActiveUser
             LOGGER.error("Principal is null");
             return;
         }
+        System.out.println("Зашел на /чат");
         String authenticatedSender = principal.getName();
         String time = CommonUtils.getCurrentTimeStamp();
 
@@ -107,4 +112,31 @@ public class MessageForwardController implements ActiveSessionManager.ActiveUser
         List<User> activeUsers = userRepository.findAll();
         webSocket.convertAndSend("/topic/active", activeUsers);
     }
+
+    @MessageMapping("/chat/{username}")
+    public void sendPrivateMessage(@Payload ChatMessage chatMessage, Principal principal, @DestinationVariable("username") String username) {
+        chatMessage.setFrom(principal.getName());
+        chatMessage.setRecipient(username);
+        String time = CommonUtils.getCurrentTimeStamp();
+        chatMessage.setTime(time);
+
+
+        System.out.println(username);
+        System.out.println(principal.getName());
+        webSocket.convertAndSend("/user1/" + username, chatMessage);
+
+    }
+
+    @GetMapping(value = "/dialog")
+    public String getDialog(@RequestParam(value = "friend") String friend, Authentication authentication, ModelMap modelMap) {
+        User user1 = authService.getUserByAuthentication(authentication);
+        User user2 = userService.getUserByLogin(friend).get();
+        System.out.println(user2.toString());
+        Dialog dialog = userService.getDialog(user1, friend);
+        modelMap.addAttribute("username", user1);
+        modelMap.addAttribute("friend", user2);
+        modelMap.addAttribute("dialog", dialog);
+        return "dialog";
+    }
+
 }

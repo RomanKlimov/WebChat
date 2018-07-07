@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title id="dialog" th:text="${dialog.id}">Title</title>
+</head>
+<body>
+<span id="username" th:text="${username.name}"> </span>
+<span id="friend" th:text="${friend.name}"> </span>
+<div class="row">
+    <div class="col-md-6">
+
+        <div id="conversationDiv">
+
+            <div id="response"></div>
+
+            <div class="row">
+                <div class="col-md-9">
+                    <input type="text" id="text" class="form-control" placeholder="Write a message..."/>
+                </div>
+                <div class="col-md-3">
+                    <button id="sendMessage" class="btn" onclick="sendMessage();">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/webjars/sockjs-client/1.0.2/sockjs.js}" type="text/javascript"></script>
+<script th:src="@{/stomp.js}" type="text/javascript"></script>
+<script th:src="@{/chat.js}" type="text/javascript"></script>
+</body>
+</html>

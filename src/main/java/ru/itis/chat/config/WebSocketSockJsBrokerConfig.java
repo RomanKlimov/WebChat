@@ -19,7 +19,7 @@ public class WebSocketSockJsBrokerConfig extends AbstractWebSocketMessageBrokerC
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/topic", "/queue" ,"/user");
         config.setApplicationDestinationPrefixes("/app");
-        config.setUserDestinationPrefix("/user");
+        config.setUserDestinationPrefix("/user1");
     }
 
     public void registerStompEndpoints(StompEndpointRegistry registry) {
