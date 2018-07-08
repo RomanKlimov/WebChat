@@ -16,7 +16,7 @@
 <h3>Chat deploying steps</h3>
 <ol>
     <li>Create database with name "webchat"</li>
-    <li>Set your username and password in application.properties</li>
+    <li>Configure file application.properties</li>
     <li>Cd into project WebChat</li>
     <li>Build project with mvn spring-boot:run</li>
 </ol>
