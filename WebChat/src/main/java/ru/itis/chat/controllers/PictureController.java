@@ -1,6 +1,5 @@
 package ru.itis.chat.controllers;
 
-import com.sun.deploy.net.HttpResponse;
 import com.talanlabs.avatargenerator.Avatar;
 import com.talanlabs.avatargenerator.SquareAvatar;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
