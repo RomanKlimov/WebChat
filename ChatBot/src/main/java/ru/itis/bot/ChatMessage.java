@@ -1,10 +1,5 @@
 package ru.itis.bot;
 
-/**
- * ChatMessage dto class to be used in MVC pattern
- *
- * @author Yasitha Thilakaratne
- */
 public class ChatMessage {
 
     private String from;

@@ -34,7 +34,6 @@ public class Message {
     private String value;
 
     @Column(name = "creation_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate = new Date();
+    private String creationDate;
 
 }

@@ -1,12 +1,40 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <div th:include="header :: head"></div>
     <meta charset="UTF-8"/>
     <title id="dialog" th:text="${dialog.id}">Title</title>
 </head>
 <body>
-<span id="username" th:text="${username.name}"> </span>
-<span id="friend" th:text="${friend.name}"> </span>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/home">WebChat</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#" id="username" th:text="${username.name}">your login <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#" id="friend" th:text="${friend.name}">friend login login <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/logout">Logout <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+<!--<span id="username" th:text="${username.name}"> </span>-->
+<!--<ffsdaspan id="friend" th:text="${friend.name}"> </span>-->
 <div class="row">
 
 
@@ -17,8 +45,9 @@
         </div>
 
         <div th:case="*">
-            <ul th:each="message : ${ dialog.messages}">
-                <li> <span th:text="${message.user_mes.name}"></span></li>
+            <ul th:each="message : ${ dialog.messages}" style="list-style-type: none;">
+                <li> <span th:text="${message.user_mes.name + ' ' + message.user_mes.lastName}"></span></li>
+                <li> <span th:text="${message.creationDate}"></span></li>
                 <li> <span th:text="${message.value}"></span></li>
             </ul>
         </div>

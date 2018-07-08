@@ -12,7 +12,13 @@ import ru.itis.chat.services.interfaces.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.Optional;
+
+/**
+ *
+ *Avatar generator based on name and lastName
+ * converted to Long
+ *
+ */
 
 @Controller
 public class PictureController {

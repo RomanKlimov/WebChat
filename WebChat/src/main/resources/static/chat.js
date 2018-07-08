@@ -21,13 +21,6 @@ function connect(selectedUsername) {
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
-        // stompClient.subscribe('/user/queue/messages', function (messageOutput) {
-        //     showMessageOutput(JSON.parse(messageOutput.body));
-        // });
-        //
-        // stompClient.subscribe('/topic/active', function (messageOutput) {
-        //     updateUsers(JSON.parse(messageOutput.body));
-        // });
         stompClient.subscribe('/user1/' + dialog, function (messageOutput) {
             showMessageOutput(JSON.parse(messageOutput.body));
         });
@@ -56,15 +49,6 @@ function sendMessage() {
         JSON.stringify({'from': from, 'text': text, 'recipient': selectedUsername}));
 }
 
-// function setSelectedUser() {
-//     selectedUsername = document.querySelector('#friend').innerText.trim();
-//     console.log(selectedUsername);
-//     document.getElementById('response').innerHTML = '';
-//     stompClient.subscribe('/user/' + dialog, function (messageOutput) {
-//         showMessageOutput(JSON.parse(messageOutput.body));
-//     });
-// }
-
 function showMessageOutput(messageOutput) {
     console.log(JSON.stringify(messageOutput));
     if (messageOutput.from != from) {
@@ -83,29 +67,4 @@ function createTextNode(messageObj) {
         messageObj.text +
         '</b></div>' +
         '</div>';
-}
-
-function updateUsers(userList) {
-    console.log('List of users : ' + userList);
-    var activeUserUL = document.getElementById('active-users');
-
-    var index;
-    activeUserUL.innerHTML = '';
-    if (userList.length == 0) {
-        activeUserUL.innerHTML = '<p><i>No active users found.</i></p>';
-        return;
-    }
-    activeUserUL.innerHTML = '<p class="text-muted">click on user to begin chat</p>';
-
-    for (index = 0; index < userList.length; ++index) {
-        if (userList[index] != from) {
-            activeUserUL.innerHTML = activeUserUL.innerHTML + createUserNode(userList[index], index);
-        }
-    }
-}
-
-function createUserNode(username, index) {
-    return '<li class="list-group-item">' +
-        '<a class="active-user" href="javascript:void(0)" onclick="setSelectedUser(\'' + username + '\')">' + username + '</a>' +
-        '</li>';
 }
