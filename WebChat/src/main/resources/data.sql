@@ -6,7 +6,7 @@
 -- Dumped by pg_dump version 10.2
 
 -- Started on 2018-07-08 18:10:39
-CREATE DATABASE "WebChat";
+CREATE DATABASE "webchat";
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
