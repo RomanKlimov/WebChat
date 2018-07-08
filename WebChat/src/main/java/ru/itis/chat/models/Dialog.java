@@ -32,11 +32,4 @@ public class Dialog {
     private List<Message> messages = new ArrayList<>();
 
 
-//    @Override
-//    public int hashCode() {
-//        Integer result = id;
-//        result = 31 * result + (title != null ? title.hashCode() : 0);
-//        return result;
-//    }
-
 }

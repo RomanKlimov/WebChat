@@ -42,8 +42,4 @@ public class User {
     @JoinTable(name = "user_dialog", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "dialog_id", referencedColumnName = "id"))
     private List<Dialog> dialogs = new ArrayList<>();
 
-    private String imageUrl;
-
-
-
 }

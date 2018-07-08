@@ -9,10 +9,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @ComponentScan("ru.itis.chat")
-@EntityScan(basePackages = {"ru.itis.chat.models", "ru.itis.chat.form"})
+@EntityScan(basePackages = {"ru.itis.chat.models", "ru.itis.chat.dto"})
 @EnableJpaRepositories(basePackages = "ru.itis.chat.repositories")
 public class Application {
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }

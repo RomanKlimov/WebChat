@@ -9,10 +9,10 @@ import ru.itis.chat.models.User;
 import ru.itis.chat.repositories.DialogRepository;
 import ru.itis.chat.services.interfaces.DialogService;
 import ru.itis.chat.services.interfaces.UserService;
+import ru.itis.chat.util.CommonUtils;
 
-import java.util.Date;
+import java.text.ParseException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DialogServiceImpl implements DialogService {
@@ -35,8 +35,8 @@ public class DialogServiceImpl implements DialogService {
     }
 
     @Override
-    public void createDialog(Dialog dialog) {
-        dialogRepository.save(dialog);
+    public Dialog createDialog(Dialog dialog) {
+        return dialogRepository.save(dialog);
     }
 
     @Override
@@ -53,17 +53,14 @@ public class DialogServiceImpl implements DialogService {
 
     @Override
     @Transactional
-    public void updateDialog(String valueOfMessage, String dialogId, String username) {
+    public void updateDialog(String valueOfMessage, String dialogId, String username) throws ParseException {
         Dialog dialog = dialogRepository.findOneById(Long.valueOf(dialogId));
-//        System.out.println(dialog.toString());
         List<Message> messages = dialog.getMessages();
         System.out.println(messages.toString());
         User user = userService.getUserByLogin(username).get();
         System.out.println(user.toString());
-        Message build = Message.builder().value(valueOfMessage).dialog(dialog).user_mes(user).creationDate(new Date()).build();
-//        messages.sort((o1, o2) -> o1.getCreationDate().compareTo(o2.getCreationDate()));
+        Message build = Message.builder().value(valueOfMessage).dialog(dialog).user_mes(user).creationDate(CommonUtils.getCurrentTimeStampForDialogs()).build();
         messages.add(build);
-//        dialog.setMessages(messages);
         dialogRepository.save(dialog);
     }
 }

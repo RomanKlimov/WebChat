@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ru.itis.chat.exceptions.EmailExistsException;
-import ru.itis.chat.form.UserRegistrationForm;
+import ru.itis.chat.dto.UserRegistrationForm;
 import ru.itis.chat.services.interfaces.RegistrationService;
 import ru.itis.chat.validator.UserRegistrationFormValidator;
 
@@ -33,14 +32,14 @@ public class RegistrationController {
 
     @PostMapping("/signUp")
     public String registerUserAccount(@ModelAttribute("userForm") @Valid UserRegistrationForm userRegistrationForm,
-                                      BindingResult result,  RedirectAttributes attributes) throws EmailExistsException {
+                                      BindingResult result,  RedirectAttributes attributes) throws Exception {
         if (result.hasErrors()){
-            attributes.addFlashAttribute("userRegistrationForm", userRegistrationForm);
+            System.out.println(result.getAllErrors().get(0).getDefaultMessage());
             attributes.addFlashAttribute("error" , result.getAllErrors().get(0).getDefaultMessage());
             return "redirect:/signUp";
         }
         registrationService.createUserAccount(userRegistrationForm);
-        return "redirect:/login";
+        return "redirect:/home";
     }
 
     @GetMapping("/signUp")
@@ -51,8 +50,4 @@ public class RegistrationController {
         return "signUp";
     }
 
-    @GetMapping("/signUp1")
-    public String signUp1(){
-        return "signUp1";
-    }
 }

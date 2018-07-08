@@ -9,7 +9,6 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 /**
  * Configures web socket message broker.
  *
- * @author Yasitha Thilakaratne
  */
 @Configuration
 @EnableWebSocketMessageBroker
@@ -17,13 +16,12 @@ public class WebSocketSockJsBrokerConfig extends AbstractWebSocketMessageBrokerC
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic", "/queue" ,"/user");
+        config.enableSimpleBroker("/user");
         config.setApplicationDestinationPrefixes("/app");
         config.setUserDestinationPrefix("/user1");
     }
 
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/grp-chat").withSockJS();
         registry.addEndpoint("/chat").setAllowedOrigins("*").withSockJS();
     }
 }

@@ -4,6 +4,7 @@ import com.talanlabs.avatargenerator.Avatar;
 import com.talanlabs.avatargenerator.SquareAvatar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.itis.chat.models.Dialog;
 import ru.itis.chat.models.User;
 import ru.itis.chat.repositories.UserRepository;
@@ -50,7 +51,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.findFirstByLogin(login);
     }
 
+
     @Override
+    @Transactional
     public Dialog getDialog(User user, String loginParam) {
         if (loginParam != null && !loginParam.isEmpty()) {
             List<User> usersDialog = new ArrayList<>();
@@ -58,7 +61,7 @@ public class UserServiceImpl implements UserService {
             usersDialog.add(getUserByLogin(loginParam).get());
             if (!dialogService.checkExistence(usersDialog)){
                 Dialog dialog = Dialog.builder().users(usersDialog).build();
-                dialogService.createDialog(dialog);
+                return dialogService.createDialog(dialog);
             }
 
             return dialogService.getDialogByUsers(usersDialog);
